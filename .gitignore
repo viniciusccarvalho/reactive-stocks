@@ -7,7 +7,6 @@ bin
 build
 .gradle
 .springBeans
-pom.xml
 *.iml
 *.ipr
 *.iws

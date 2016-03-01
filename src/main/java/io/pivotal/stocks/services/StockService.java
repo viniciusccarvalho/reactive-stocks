@@ -94,6 +94,12 @@ public class StockService {
 	private List<Quote> fakeQuotes(String delimitedSymbolString){
 		String[] symbols = delimitedSymbolString.split(",");
 		List<Quote> quotes = new ArrayList<>();
+		try {
+			Thread.sleep(2000L);
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		for(String s : symbols){
 			Quote quote = new Quote();
 			quote.setSymbol(s);
@@ -125,9 +131,15 @@ public class StockService {
 	public void setup() throws Exception {
 		this.topSymbols = loadSymbols(linesToLoad);
 
+//		Flux.interval(30).log("beforeFlatMap").flatMap(time -> {
+//			return Flux.fromIterable(topSymbols).log("beforeInner").flatMap(symbols -> {
+//				return Mono.fromCallable(() -> {return fakeQuotes(symbols);}).publishOn(io).flatMap(Flux::fromIterable).log("mono");
+//			});
+//		}).log("afterFlatMap").subscribe(Subscribers.consumer(quote -> {System.out.println(quote);}));
+
 		Flux.interval(30).log("interval " + Instant.now().toEpochMilli()).flatMap(time -> {
 			return Flux.fromIterable(topSymbols).flatMap(symbols -> {
-				return Mono.fromCallable(() -> {return fetchQuotes(symbols);}).publishOn(async).flatMap(Flux::fromIterable).log("mono "+Instant.now().toEpochMilli());
+				return Mono.fromCallable(() -> {return fakeQuotes(symbols);}).publishOn(io).flatMap(Flux::fromIterable).log("mono "+Instant.now().toEpochMilli());
 			});
 		}).subscribe(Subscribers.consumer(quote -> {System.out.println(quote);}));
 
