@@ -2,6 +2,7 @@ package io.pivotal.stocks;
 
 import io.pivotal.stocks.repository.CompanyRepository;
 import io.pivotal.stocks.services.CompanyService;
+import io.pivotal.stocks.services.StockService;
 import io.pivotal.stocks.services.StockServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,19 +19,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @WebAppConfiguration
 public class StocksServiceApplicationTests {
 
-	@Autowired
-	private CompanyService service;
 
 	@Autowired
-	private StockServiceImpl stockServiceImpl;
+	private StockService stockService;
 
-	@Autowired
-	private CompanyRepository repository;
+
 
 	@Value("${quotes.endpoint.yahoo}")
 	private String endpoint;
 
-	private SchedulerGroup io = SchedulerGroup.io();
+
 
 	@Test
 	public void contextLoads() throws Exception{
