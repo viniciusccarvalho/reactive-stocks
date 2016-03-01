@@ -1,0 +1,30 @@
+server:
+  port: 9090
+
+
+
+quotes:
+  symbols:
+    lines_to_load: 5
+  endpoint:
+    nasdaq: "http://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=all&render=download"
+    yahoo: "https://query.yahooapis.com/v1/public/yql?q=select Symbol,Name,Ask,Change,DaysLow,DaysHigh from yahoo.finance.quotes where symbol in ('{symbol}')&format=json&env=http://datatables.org/alltables.env"
+
+logging:
+  level:
+    yahoofinance: ERROR
+---
+
+spring:
+  profiles: development
+  jpa:
+    database: h2
+
+---
+
+spring:
+  profiles: cloud
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
